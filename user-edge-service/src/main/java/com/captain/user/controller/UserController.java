@@ -61,6 +61,7 @@ public class UserController {
     }
 
 
+    @ResponseBody
     @RequestMapping(value = "/sendVerifyCode", method = RequestMethod.POST)
     public Response sendVerifyCode(String mobile, String email) {
 
@@ -85,12 +86,15 @@ public class UserController {
                 return Response.SEND_VERIFYCODE_FAILED;
             }
         } catch (TException e) {
+            e.printStackTrace();
             return Response.exception(e);
         }
         return Response.SUCCESS;
     }
 
 
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @ResponseBody
     public Response register(String username, String password
             , String mobile, String email, String verifyCode) {
 
@@ -110,8 +114,19 @@ public class UserController {
             }
         }
 
+        UserInfo userInfo = new UserInfo();
+        userInfo.setUsername(username);
+        userInfo.setPassword(md5(password));
+        userInfo.setMobile(mobile);
+        userInfo.setEmail(email);
+        try {
+            serviceProvider.getUserService().registerUser(userInfo);
+        } catch (TException e) {
+            e.printStackTrace();
+            return Response.exception(e);
+        }
 
-        return null;
+        return Response.SUCCESS;
     }
 
 
