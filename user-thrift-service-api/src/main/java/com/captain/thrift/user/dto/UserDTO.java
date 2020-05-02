@@ -1,4 +1,4 @@
-package com.captain.user.dto;
+package com.captain.thrift.user.dto;
 
 import java.io.Serializable;
 

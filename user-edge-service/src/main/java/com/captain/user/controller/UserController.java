@@ -1,7 +1,7 @@
 package com.captain.user.controller;
 
 import com.captain.thrift.user.UserInfo;
-import com.captain.user.dto.UserDTO;
+import com.captain.thrift.user.dto.UserDTO;
 import com.captain.user.redis.RedisClient;
 import com.captain.user.response.LoginResponse;
 import com.captain.user.response.Response;
@@ -11,6 +11,7 @@ import org.apache.thrift.TException;
 import org.apache.tomcat.util.buf.HexUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.MessageDigest;
@@ -23,7 +24,8 @@ import java.util.Random;
  * @Date 2020/3/15 23:16
  * @Version 1.0
  */
-@RestController
+@RequestMapping("/user")
+@Controller
 public class UserController {
 
     @Autowired
@@ -32,6 +34,13 @@ public class UserController {
     @Autowired
     private RedisClient redisClient;
 
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login() {
+        System.out.println("跳转登录页面");
+        return "/login";
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Response login(@RequestParam("username") String username
             , @RequestParam("password") String password) {
@@ -107,7 +116,7 @@ public class UserController {
             if (!StringUtils.equals(verifyCode, redisCode)) {
                 return Response.VERIFY_CODE_INVALID;
             }
-        }else {
+        } else {
             String redisCode = redisClient.get(email);
             if (!StringUtils.equals(verifyCode, redisCode)) {
                 return Response.VERIFY_CODE_INVALID;
@@ -129,6 +138,11 @@ public class UserController {
         return Response.SUCCESS;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "authentication", method = RequestMethod.POST)
+    public UserDTO authentication(@RequestHeader("token") String token) {
+        return redisClient.get(token);
+    }
 
     private Object toDTO(UserInfo userInfo) {
         UserDTO userDTO = new UserDTO();
