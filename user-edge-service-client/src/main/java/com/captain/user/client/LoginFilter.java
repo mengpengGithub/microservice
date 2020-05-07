@@ -29,9 +29,10 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class LoginFilter implements Filter {
 
-    private static Cache<String, UserDTO> cache  = CacheBuilder.newBuilder()
+    private static Cache<String, UserDTO> cache = CacheBuilder.newBuilder()
             .maximumSize(10000)
             .expireAfterWrite(3, TimeUnit.MINUTES).build();
+
     public void init(FilterConfig filterConfig) throws ServletException {
 
     }
@@ -42,31 +43,31 @@ public abstract class LoginFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         String token = request.getParameter("token");
-        if (StringUtils.isBlank(token)){
+        if (StringUtils.isBlank(token)) {
             Cookie[] cookies = request.getCookies();
-            if(cookies != null){
+            if (cookies != null) {
                 for (Cookie cookie : cookies) {
-                    if(StringUtils.equals(cookie.getName(), "token")){
+                    if (StringUtils.equals(cookie.getName(), "token")) {
                         token = cookie.getValue();
                     }
                 }
             }
         }
 
-            UserDTO userDTO = null;
-        if(StringUtils.isNotBlank(token)){
+        UserDTO userDTO = null;
+        if (StringUtils.isNotBlank(token)) {
             userDTO = cache.getIfPresent(token);
-            if(userDTO ==  null){
+            if (userDTO == null) {
                 userDTO = requestUserInfo(token);
+                cache.put(token, userDTO);
             }
         }
 
-        if(userDTO == null){
+        if (userDTO == null) {
             response.sendRedirect("http://127.0.0.1:8082/user/login");
             return;
         }
 
-        cache.put(token, userDTO);
         login(request, response, userDTO);
         filterChain.doFilter(request, response);
     }
@@ -80,25 +81,25 @@ public abstract class LoginFilter implements Filter {
         post.addHeader("token", token);
 
 
-            InputStream inputStream = null;
+        InputStream inputStream = null;
         try {
             HttpResponse response = clent.execute(post);
-            if(response.getStatusLine().getStatusCode() != HttpStatus.SC_OK){
-                throw new RuntimeException("request user info failed! StatusLine:"+ response.getStatusLine());
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                throw new RuntimeException("request user info failed! StatusLine:" + response.getStatusLine());
             }
             inputStream = response.getEntity().getContent();
             byte[] temp = new byte[1024];
             StringBuilder sb = new StringBuilder();
             int len = 0;
-            while ((len = inputStream.read(temp)) != -1){
-                sb.append(new String(temp, 0 ,len));
+            while ((len = inputStream.read(temp)) != -1) {
+                sb.append(new String(temp, 0, len));
             }
 
             UserDTO userDTO = new ObjectMapper().readValue(sb.toString(), UserDTO.class);
             return userDTO;
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (inputStream != null) {
                 try {
                     inputStream.close();

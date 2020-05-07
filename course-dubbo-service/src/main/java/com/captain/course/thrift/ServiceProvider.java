@@ -1,10 +1,13 @@
-package com.captain.user.thrift;
+package com.captain.course.thrift;
 
-import com.captain.thrift.message.MessageService;
+import com.captain.thrift.user.UserService;
 import org.apache.thrift.TServiceClient;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
-import org.apache.thrift.transport.*;
+import org.apache.thrift.transport.TFramedTransport;
+import org.apache.thrift.transport.TSocket;
+import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -25,12 +28,6 @@ public class ServiceProvider {
     @Value("${thrift.user.port}")
     private int thriftUserPort;
 
-    @Value("${thrift.message.ip}")
-    private String thriftMessageIp;
-
-    @Value("${thrift.message.port}")
-    private int thriftMessagePort;
-
     private enum ServiceType{
         USER,
         MESSAGE,
@@ -38,10 +35,6 @@ public class ServiceProvider {
 
     public UserService.Client getUserService() {
         return getService(thriftUserIp, thriftUserPort, ServiceType.USER);
-    }
-
-    public MessageService.Client getMessageService() {
-        return getService(thriftMessageIp, thriftMessagePort, ServiceType.MESSAGE);
     }
 
     public <T> T getService(String ip, int port, ServiceType serviceType){
@@ -59,8 +52,6 @@ public class ServiceProvider {
             case USER:
                 result = new UserService.Client(protocol);
                 break;
-            case MESSAGE:
-                result = new MessageService.Client(protocol);
         }
         return (T) result;
     }

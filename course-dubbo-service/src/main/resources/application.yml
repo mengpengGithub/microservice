@@ -1,0 +1,24 @@
+thrift:
+  user:
+    ip: 127.0.0.1
+    port: 7911
+
+
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.124.34:3306/db_course
+    username: root
+    password: 123456
+
+  dubbo:
+    application:
+      name: course-service
+    registry:
+      address: zookeeper://127.0.0.1:2181
+    protocal:
+      name: dubbo
+      host: 127.0.0.1
+      port: 20880
+    scan: com.captain.course
