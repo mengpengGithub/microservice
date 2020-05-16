@@ -1,5 +1,6 @@
 package com.captain.user.thrift;
 
+import com.captain.thrift.user.UserService;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TServer;

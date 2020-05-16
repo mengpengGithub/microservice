@@ -1,5 +1,6 @@
 package com.captain.course.service;
 
+import com.alibaba.dubbo.config.annotation.Service;
 import com.captain.course.dto.CourseDTO;
 import com.captain.course.mapper.CourseMapper;
 import com.captain.course.thrift.ServiceProvider;
@@ -8,7 +9,6 @@ import com.captain.thrift.user.dto.TeacherDTO;
 import org.apache.thrift.TException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

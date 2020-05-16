@@ -1,6 +1,7 @@
 package com.captain.user.thrift;
 
 import com.captain.thrift.message.MessageService;
+import com.captain.thrift.user.UserService;
 import org.apache.thrift.TServiceClient;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;

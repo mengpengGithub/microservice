@@ -4,7 +4,6 @@ thrift:
     port: 7911
 
 
-
 spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -16,9 +15,9 @@ spring:
     application:
       name: course-service
     registry:
-      address: zookeeper://127.0.0.1:2181
-    protocal:
+      address: zookeeper://192.168.124.34:2181
+    protocol:
       name: dubbo
-      host: 127.0.0.1
+#      host: 127.0.0.1
       port: 20880
     scan: com.captain.course

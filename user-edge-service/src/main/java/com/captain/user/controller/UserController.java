@@ -1,5 +1,6 @@
 package com.captain.user.controller;
 
+import com.captain.thrift.user.UserInfo;
 import com.captain.thrift.user.dto.UserDTO;
 import com.captain.user.redis.RedisClient;
 import com.captain.user.response.LoginResponse;

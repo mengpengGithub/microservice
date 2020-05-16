@@ -17,10 +17,10 @@ import java.util.List;
  * @Version 1.0
  */
 @SpringBootApplication
-public class ServiceApplication {
+public class CourseEdgeServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ServiceApplication.class, args);
+        SpringApplication.run(CourseEdgeServiceApplication.class, args);
     }
 
     @Bean
@@ -29,6 +29,7 @@ public class ServiceApplication {
         CourseFilter courseFilter = new CourseFilter();
         filterRegistrationBean.setFilter(courseFilter);
         List<String> urlPatterns = new ArrayList<String>();
+        urlPatterns.add("/*");
         filterRegistrationBean.setUrlPatterns(urlPatterns);
         return filterRegistrationBean;
     }

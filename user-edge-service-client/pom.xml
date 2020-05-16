@@ -12,11 +12,6 @@
     <artifactId>user-edge-service-client</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-        </dependency>
 
         <dependency>
             <groupId>commons-lang</groupId>
@@ -40,6 +35,12 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>28.0-jre</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>9.0.30</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

@@ -1,0 +1,9 @@
+spring:
+  dubbo:
+    application:
+      name: course-service
+    registry:
+      address: zookeeper://192.168.124.34:2181
+    scan: com.captain.course.controller
+server:
+  port: 8081
